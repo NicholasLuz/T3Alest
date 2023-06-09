@@ -93,16 +93,19 @@ public class WordTree {
 
     // Construtor
     public WordTree() {
-      ...
+     root = new CharNode(' ');
+     totalNodes = 1;
+
+
     }
 
     // Metodos
     public int getTotalWords() {
-        ...
+        return totalWords;
     }
 
     public int getTotalNodes() {
-        ...
+        return totalNodes;
     }
 
     /**
@@ -110,7 +113,26 @@ public class WordTree {
     *@param word
     */
     public void addWord(String word) {
-        ...
+        CharNode currentNode = root;
+
+        for (int i = 0; i < word.length(); i++) {
+            char currentChar = word.charAt(i);
+            CharNode childNode = currentNode.findChildChar(currentChar);
+
+            if (childNode != null) {
+                currentNode = childNode;
+            } else {
+                boolean isFinal = (i == word.length() - 1);
+                CharNode newNode = currentNode.addChild(currentChar, isFinal);
+                currentNode = newNode;
+                totalNodes++;
+            }
+        }
+
+        if (!currentNode.isFinal) {
+            currentNode.isFinal = true;
+            totalWords++;
+        }
     }
 
     /**
@@ -119,7 +141,20 @@ public class WordTree {
      * @return o nodo final encontrado
      */
     private CharNode findCharNodeForWord(String word) {
-        ...
+        CharNode currentNode = root;
+
+        for (int i = 0; i < word.length(); i++) {
+            char currentChar = word.charAt(i);
+            CharNode childNode = currentNode.findChildChar(currentChar);
+
+            if (childNode != null) {
+                currentNode = childNode;
+            } else {
+                return null;
+            }
+        }
+
+        return currentNode;
     }
 
     /**
@@ -127,8 +162,25 @@ public class WordTree {
     * Tipicamente, um método recursivo.
     * @param prefix
     */
-    public List<String> searchAll(String prefix) {
-        ...
+    public LinkedList<String> searchAll(String prefix) {
+
+               LinkedList<String> words = new LinkedList<>();
+        CharNode startNode = findCharNodeForWord(prefix);
+
+        if (startNode != null) {
+            searchAllRecursive(startNode, words);
+        }
+
+        return words;
     }
 
+    private void searchAllRecursive(CharNode node, LinkedList<String> words) {
+        if (node.isFinal) {
+            words.add(node.getWord());
+        }
+
+        for (CharNode child : node.children) {
+            searchAllRecursive(child, words);
+        }
+    }
 }
