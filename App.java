@@ -6,12 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 
 public class App {
     public static void main(String[] args) {
-        LinkedList<Palavra> lista = new LinkedList<>();
+        Scanner in = new Scanner(System.in);
+        LinkedList<Palavra> list = new LinkedList<>();
         String aux[];
+        WordTree tree = new WordTree();
+
                 
         Path path1 = Paths.get("dicionario.csv");
 
@@ -19,19 +23,39 @@ public class App {
             String line = reader.readLine();
             while (line != null) {
                 aux = line.split(";");
-                if(lista.size()==0) {
+                if(list.size()==0) {
                     aux[0] = aux[0].substring(1);
                     System.out.println(aux[0]);
                 }
                 Palavra p = new Palavra(aux[0],aux[1]);
-                lista.add(p);
+                list.add(p);
                 line = reader.readLine();
             }
         } catch (IOException e) {
             System.err.format("Erro na leitura do arquivo: ", e);
         }  
-        System.out.println("Lista de palavras e seus significados" + lista);
+        System.out.println("Lista de palavras e seus significados" + list);
+
+        // Add the words to the tree
+        for(Palavra p : list) {
+            tree.addWord(p.getPalavra());
+        }
+
+        System.out.println(tree.getTotalWords());
+        System.out.println(tree.getTotalNodes());
+
+
+
+
+
+
+
+
+
+        //Starts the process of searching for a word
+        System.out.println("Digite o começo de uma palavra que deseja buscar:");
+        String findWord = in.nextLine();
+
         
     }
- 
 }
