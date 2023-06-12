@@ -56,7 +56,7 @@ public class WordTree {
             Stack<Character> charStack = new Stack<>();
             CharNode currentNode = this;
 
-            while (currentNode != null) {
+            while (currentNode != root) {
                 charStack.push(currentNode.character);
                 currentNode = currentNode.father;
             }
@@ -93,9 +93,8 @@ public class WordTree {
 
     // Construtor
     public WordTree() {
-     root = new CharNode(' ');
-     totalNodes = 1;
-
+        root = new CharNode(' ');
+        totalNodes = 1;
 
     }
 
@@ -109,9 +108,10 @@ public class WordTree {
     }
 
     /**
-    *Adiciona palavra na estrutura em árvore
-    *@param word
-    */
+     * Adiciona palavra na estrutura em árvore
+     * 
+     * @param word
+     */
     public void addWord(String word) {
         CharNode currentNode = root;
         boolean isFinal = false;
@@ -123,7 +123,7 @@ public class WordTree {
             if (childNode != null) {
                 currentNode = childNode;
             } else {
-                if(i == word.length() - 1){
+                if (i == word.length() - 1) {
                     isFinal = true;
                     totalWords++;
                 }
@@ -141,6 +141,7 @@ public class WordTree {
 
     /**
      * Vai descendo na árvore até onde conseguir encontrar a palavra
+     * 
      * @param word
      * @return o nodo final encontrado
      */
@@ -162,13 +163,15 @@ public class WordTree {
     }
 
     /**
-    * Percorre a árvore e retorna uma lista com as palavras iniciadas pelo prefixo dado.
-    * Tipicamente, um método recursivo.
-    * @param prefix
-    */
+     * Percorre a árvore e retorna uma lista com as palavras iniciadas pelo prefixo
+     * dado.
+     * Tipicamente, um método recursivo.
+     * 
+     * @param prefix
+     */
     public LinkedList<String> searchAll(String prefix) {
 
-               LinkedList<String> words = new LinkedList<>();
+        LinkedList<String> words = new LinkedList<>();
         CharNode startNode = findCharNodeForWord(prefix);
 
         if (startNode != null) {
