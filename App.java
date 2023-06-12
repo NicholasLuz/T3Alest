@@ -41,21 +41,41 @@ public class App {
             tree.addWord(p.getPalavra());
         }
 
-        System.out.println(tree.getTotalWords());
-        System.out.println(tree.getTotalNodes());
 
-
-
-
-
-
-
-
-
-        //Starts the process of searching for a word
+        //Searching for words
         System.out.println("Digite o começo de uma palavra que deseja buscar:");
         String findWord = in.nextLine();
 
-        
+        LinkedList<String> wordsFound = tree.searchAll(findWord);
+
+        System.out.println("Palavras encontradas: " + wordsFound);
+        System.out.println("Digite uma das palavras encontradas para ver seu significado:");
+        String meaningWord = in.nextLine();
+
+        //Get the word's meaning 
+        // boolean found = false;
+        // if(wordsFound.contains(meaningWord)) {
+        //     found = true;
+        // }
+        // System.out.println(found);
+
+
+        for(Palavra p : list) {
+            if(p.getPalavra().equals(meaningWord)) {
+                System.out.println("Significado: " + p.getSignificado());
+                break;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
