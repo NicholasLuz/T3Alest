@@ -114,6 +114,7 @@ public class WordTree {
     */
     public void addWord(String word) {
         CharNode currentNode = root;
+        boolean isFinal = false;
 
         for (int i = 0; i < word.length(); i++) {
             char currentChar = word.charAt(i);
@@ -122,7 +123,10 @@ public class WordTree {
             if (childNode != null) {
                 currentNode = childNode;
             } else {
-                boolean isFinal = (i == word.length() - 1);
+                if(i == word.length() - 1){
+                    isFinal = true;
+                    totalWords++;
+                }
                 CharNode newNode = currentNode.addChild(currentChar, isFinal);
                 currentNode = newNode;
                 totalNodes++;
