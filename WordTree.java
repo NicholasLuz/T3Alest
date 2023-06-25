@@ -39,14 +39,6 @@ public class WordTree {
             return child;
         }
 
-        public int getNumberOfChildren() {
-            return children.size();
-        }
-
-        public CharNode getChild(int index) {
-            return children.get(index);
-        }
-
         /**
          * Obtém a palavra correspondente a este nodo, subindo até a raiz da árvore
          * 
@@ -112,7 +104,7 @@ public class WordTree {
      * 
      * @param word
      */
-    public void addWord(String word) {
+    public void addWord(String word, String significado) {
         CharNode currentNode = root;
         boolean isFinal = false;
 
@@ -126,16 +118,22 @@ public class WordTree {
                 if (i == word.length() - 1) {
                     isFinal = true;
                     totalWords++;
+                    CharNode newNode = currentNode.addChild(currentChar, isFinal);
+                    newNode.significado = significado;
+                    currentNode = newNode;
+                    totalNodes++;
+                } else {
+                    CharNode newNode = currentNode.addChild(currentChar, isFinal);
+                    currentNode = newNode;
+                    totalNodes++;
                 }
-                CharNode newNode = currentNode.addChild(currentChar, isFinal);
-                currentNode = newNode;
-                totalNodes++;
             }
         }
 
         if (!currentNode.isFinal) {
             currentNode.isFinal = true;
             totalWords++;
+            currentNode.significado = significado;
         }
     }
 
@@ -189,5 +187,13 @@ public class WordTree {
         for (CharNode child : node.children) {
             searchAllRecursive(child, words);
         }
+    }
+
+    public String getSignificadoNode(String word) {
+        CharNode node = findCharNodeForWord(word);
+        if (node != null) {
+            return node.significado;
+        }
+        return null;
     }
 }

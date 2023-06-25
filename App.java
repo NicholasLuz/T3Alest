@@ -32,33 +32,38 @@ public class App {
         } catch (IOException e) {
             System.err.format("Erro na leitura do arquivo: ", e);
         }
-        System.out.println("Lista `de palavras e seus significados" + list);
+        System.out.println("Lista de palavras e seus significados" + list);
 
-        // Add the words to the tree
+        // Adicionar palavras na árvore
         for (Palavra p : list) {
-            tree.addWord(p.getPalavra());
+            tree.addWord(p.getPalavra(), p.getSignificado());
         }
 
-        // Searching for words
-        System.out.println("Digite o começo de uma palavra que deseja buscar:");
-        String findPrefix = in.nextLine();
-
-        LinkedList<String> wordsFound = tree.searchAll(findPrefix);
-
-        System.out.println("Palavras encontradas: " + wordsFound);
-        System.out.println("Digite uma das palavras encontradas para ver seu significado:");
-        String findWord = in.nextLine();
-
-        if (wordsFound.contains(findWord)) {
-            for (Palavra listaPalavras : list) {
-                if (findWord.equals(listaPalavras.getPalavra())) {
-                    String significado = listaPalavras.getSignificado();
-                    System.out.println("Significado: " + significado);
-                    break;
-                }
+        // Buscar palavras
+        while (true) {
+            System.out.println("Digite o começo de uma palavra que deseja buscar, ou 0 para sair:");
+            String findPrefix = in.nextLine();
+            if (findPrefix.equals("0")) {
+                in.close();
+                System.exit(0);
             }
-        } else {
-            System.out.println("Esta palavra não foi encontrada.");
+
+            LinkedList<String> wordsFound = tree.searchAll(findPrefix);
+
+            if (wordsFound.size() == 0) {
+                System.out.println("Nenhuma palavra encontrada.");
+            } else {
+                System.out.println("Palavras encontradas: " + wordsFound);
+            }
+            System.out.println("Digite uma das palavras encontradas para ver seu significado:");
+            String findWord = in.nextLine();
+
+            if (wordsFound.contains(findWord)) {
+                String significado = tree.getSignificadoNode(findWord);
+                System.out.println("Significado: " + significado);
+            } else {
+                System.out.println("Palavra não faz parte da lista.");
+            }
         }
     }
 }
